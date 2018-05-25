@@ -16,7 +16,7 @@ from gym import wrappers
 np.random.seed(0)
 
 env = gym.make(sys.argv[1])
-outdir = sys.argv[2]
+num_epi = int(sys.argv[2])
 
 initial_epsilon = 0.1 # probability of choosing a random action (changed from original value of 0.0)
 alpha = 0.1 # learning rate
@@ -33,7 +33,7 @@ def main():
     theta = np.zeros(N) # parameters (memory)
 
     #Train with sys.argv[4] step size
-    for episode_num in xrange(20000):
+    for episode_num in xrange(num_epi):
         print episode_num,episode(epsilon, theta, env.spec.tags.get('wrapper_config.TimeLimit.max_episode_steps'))
         epsilon = epsilon * 0.999 # added epsilon decay
     return theta
@@ -79,32 +79,7 @@ def episode(epsilon, theta, max_steps):
     lastState = observation
     while True:
         step +=1
-	'''
-        e *= gamma * lambda_ #eligibility update
-        for a in xrange(M):
-            v = 0.0
-            if a == action:
-                v = 1.0
-            for j in xrange(NUM_TILINGS):
-                e[F[a,j]] = v
-	
-        
-        observation, reward, done, info = env.step(action)
-        delta = reward - Q[action]
-        load_F(observation)
-        load_Q()
-        next_action = np.argmax(Q)
-        if np.random.random() < epsilon:
-            next_action = env.action_space.sample()
-        if not done:
-            delta += gamma * Q[next_action]
-        theta += alpha / NUM_TILINGS * delta * e #theta update
-        load_Q()
-        if done or step > max_steps:
-            break
-        action = next_action
-        '''
-        observation, reward, done, info = env.step(action)
+	observation, reward, done, info = env.step(action)
         delta = reward - lastStateActionValue
         temp = 0
         eUpdate = getEUpdate(action)
@@ -129,11 +104,6 @@ def episode(epsilon, theta, max_steps):
             for j in xrange(NUM_TILINGS):
                 e[F[a,j]] += v*alpha*(1-gamma*lambda_*eUpdate) #/ float(NUM_TILINGS)
 	
-	'''
-        for j in xrange(NUM_TILINGS):
-            e[F[action,j]] += alpha * (1-gamma*lambda_*eUpdate)
-	'''
-
 	#theta Update
         theta +=  delta * e #* (float(1.0) / float(NUM_TILINGS))
         for a in xrange(M):
@@ -142,10 +112,7 @@ def episode(epsilon, theta, max_steps):
                 v = 1.0
             for j in xrange(NUM_TILINGS):
                 theta[F[a,j]] += v*float(alpha * (lastStateActionValue-Q[action])) #/ float(NUM_TILINGS)
-	'''
-        for j in xrange(NUM_TILINGS):
-            theta[F[action,j]] += float(alpha * (lastStateActionValue-temp)) / float(NUM_TILINGS)
-	'''
+
         load_F(observation)
         load_Q()
 

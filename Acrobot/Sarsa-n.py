@@ -13,9 +13,9 @@ import gym
 import sys
 from gym import wrappers
 
-np.random.seed(int(sys.argv[4]))
+np.random.seed(0)
 env = gym.make(sys.argv[1])
-outdir = sys.argv[2]
+num_epi = int(sys.argv[2])
 
 initial_epsilon = 0.1 # probability of choosing a random action (changed from original value of 0.0)
 alpha = 0.1 # learning rate
@@ -34,7 +34,7 @@ def main():
 
     #Train with sys.argv[4] step size
     #total 8k episodes
-    for episode_num in xrange(8000): #see above line
+    for episode_num in xrange(num_epi): #see above line
         episodelength = episode(epsilon, theta, env.spec.tags.get('wrapper_config.TimeLimit.max_episode_steps'))
         epsilon = epsilon * 0.999 # added epsilon decay
 	print episode_num, episodelength
@@ -77,16 +77,9 @@ def episode(epsilon, theta, max_steps):
     while True:
         states.append(observation)
         step += 1
-        #print "TAKING ACTION ", action , " in state ", observation
         observation, newreward, done, info = env.step(action)
         rewards.append(newreward)
 	actions.append(action)
-        #if len(states) < nStep :
-            #print step, "REWARD BEFORE", rewards, reward 
-            #print "STATES BEFORE", states, lastState 
-            #print "ACTIONS BEFORE", actions, action
-        #print rewards
-        #print states
 	if len(states) < nStep :
             if done :
                 break
@@ -97,18 +90,10 @@ def episode(epsilon, theta, max_steps):
                 if np.random.random() < epsilon:
                     action = env.action_space.sample()
                 continue
-        #print step, "REWARDS ", rewards  
-        #print "STATES ", states 
-        #print "ACTIONS ", actions
         lastState = states.pop(0)
         reward = sum(rewards)
         rewards.pop(0)
-        #print states, lastState
         action = actions.pop(0)
-        #print "REWARDS ", reward  
-        #print "STATES ", lastState
-        #print "ACTIONS ", action
-        #print "NEXT STATE", observation
         load_F(lastState)
         load_Q()
         e *= lambda_

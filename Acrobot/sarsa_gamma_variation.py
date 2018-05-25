@@ -75,38 +75,6 @@ def episode(epsilon, theta, max_steps):
     repeated = 0
     update_index = 0
     cumreward = 0
-    '''
-    while True:
-        e *= math.pow(gamma,pers) * lambda_
-        for a in xrange(M):
-            v = 0.0
-            if a == action:
-                v = 1.0
-
-            for j in xrange(NUM_TILINGS):
-                e[F[a,j]] = v
-        cumreward = 0
-        for i in range (0,pers) :
-            step += 1
-            observation, reward, done, info = env.step(action)
-            cumreward += math.pow(gamma,i)*reward
-            if done :
-                break
-        delta = cumreward - math.pow(gamma,pers) * Q[action]
-        load_F(observation)
-        load_Q()
-        next_action = np.argmax(Q)
-        if np.random.random() < epsilon:
-            next_action = env.action_space.sample()
-        if not done:
-            delta += gamma * Q[next_action]
-        theta += alpha / NUM_TILINGS * delta * e
-        load_Q()
-        if done or step > max_steps:
-            break
-        action = next_action
-    return step
-    '''
     done = False
     prev_observation = observation
     prev_action = action# remove 
