@@ -1,0 +1,10 @@
+ #!/bin/bash
+	lambdas=( 0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95 0.999 0.9999 1)
+        for i in "${lambdas[@]}"
+	do 
+		for j in `seq 1 100`;
+        	do
+			echo ./experiment --s 15 --p 0.2 --chi 0.7 --w 3 --sigma 4 --method truesarsa_$i"_"0.1_0.1_0 --outFile true0.7noise/lambda1_1_$i"_"$j --totalEpisodes 500000  --displayInterval 1000 --randomSeed $j
+        		./experiment --s 15 --p 0.2 --chi 0.7 --w 3 --sigma 4 --method truesarsa_$i"_"0.1_0.1_0 --outFile true0.7noise/lambda1_1_$i"_"$j --totalEpisodes 500000  --displayInterval 1000 --randomSeed $j
+		done
+	done
