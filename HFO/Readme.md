@@ -44,8 +44,5 @@ Change directory to `example/sarsa_defense` and execute the following command to
 weightId is used to differentiate between different HFO training runs of the same agent.
 
 
-The executables of both agents are `high_level_di-sarsa_defense_agent` and `high_level_sarsa_n_defense_agent` included for convenience, but might need to be re-made.
-
-
 
 
