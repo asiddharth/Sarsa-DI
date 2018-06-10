@@ -25,19 +25,9 @@ LDFLAGS = -lgsl -lgslcblas
 
 #Sources
 SRCS =	mdp.cpp \
-	randomagent.cpp \
 	sarsalambdaagent.cpp \
-	expsarsalambdaagent.cpp \
-	greedygqlambdaagent.cpp \
-	qlearningagent.cpp \
-	crossentropyagent.cpp \
-	cmaes.cpp \
-	cmaesagent.cpp \
-	geneticalgorithmagent.cpp \
-	rwgagent.cpp \
 	agent.cpp \
 	main.cpp \
-	transferagent.cpp \
 	tdlambdanstepagent.cpp \
 	tdnstep.cpp \
 	sarsalambdatruncagent.cpp
